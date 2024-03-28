@@ -107,3 +107,22 @@ driver.execute_script("window.stop();")
 In this case, the webdriver waited until the element with the class name of "boxed" was fully loaded and then stopped loading because we didn't care about anything in the HTML after this element. With this final piece of learning, the web scraper was complete. The dataset about the leading home-run hitters could be scraped, compiled, and saved. And so it was.
 
 ## Conclusion
+
+Finally, we come to the end of my journey in collecting this data. But really, this is only the beginning. Now that the data has been collected, there is so much that can be done with it! And of course, I will be back to share any insights about what the data reveals.
+
+I also promised some potential applications that could take this project even further in the future. I guess I should probably mention the data that I did collect so that you can think of even more uses for this data. The dataset can be found in the GitHub repository linked [here](https://github.com/brandonskeele/top-home-run-hitters).
+
+I collected:
+* Player Name
+* Player ID
+* Total Home Runs
+* Player Quote
+* Batting Hand
+* College
+
+Here are some final thoughts that I had that you could look at taking further if you feel so inclined (and if nothing else, I have a list of things to come back to whenever I find the time to do something just for fun):
+* The quote is found at the top of each player's biographical page. Some of them are quotes <i>about</i> the player and some of quotes <i>from</i> the player. I couldn't think of a great way to separate the body of the quote from the source because of inconsistent format. But it would be cool to find a way to get an idea of the source.
+* The player ID that was collected is the same player ID that is used in just about all of the other sources of information you might want to look at. Instead of looping through each player's biographical page, more information might be extracted from an API with MLB data where you pass in those player IDs.
+* There were two ways I thought of to check whether a player was active or not (which I still might do before conducting EDA on the dataset because of the additional insights it would grant). First, the player's name is bolded on the original leaderboard table so it is found in bold brackets ({% raw %}<b> </b>{% endraw %}) if they are an active player. Second, the player's biographical page includes the date of the player's last game, or says "Still active" if they are an active player. Both of these sources could be used to create a boolean value stating whether or not the player is currently active.
+* Height and Weight could heavily impact the number of home-runs hit by a player. These additional fields could be collected as well.
+* This could be easier to collect from an API or another source, but I wonder how birth country for players would affect their home-run totals.
