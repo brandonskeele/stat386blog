@@ -84,7 +84,7 @@ When I ran what I thought was going to be the final run of my Jupyter notebook, 
 
 ![Figure]({{site.url}}/{{site.baseurl}}/assets/images/babe-ruth.jpeg)
 
-Even better, I found that I could stop loading the page once a certain element had been loaded completely. This means that, once the information I needed had been loaded, I could just move on and collect it, no matter how long the rest of the page took to load. I had to import a few more methods and functions from the <b>selenium</b> package and set a few global variables, but then the web scraper ran so smoothly, it was like watching Trea Turner slide into home plate.
+Even better, I found that I could stop loading the page once a certain element had been loaded completely. This means that, once the information I needed had been loaded, I could just move on and collect it, no matter how long the rest of the page took to load. I had to import a few more methods and functions from the <b>selenium</b> package and set a few global variables, but then the web scraper ran so smoothly, it was like watching Trea Turner slide into home.
 
 ![Figure]({{site.url}}/{{site.baseurl}}/assets/images/trea-turner-slide.gif)
 
