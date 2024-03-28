@@ -28,13 +28,13 @@ Luckily for me, a page has already been compiled on the home-runs leaderboard. U
 
 ## Collecting the Data
 
-# Beginnings and Problem 1
+### Beginnings and Problem 1
 
 Because part of the motivation for collecting data in this way in the first place was to practice web scraping, I decided to use the <b>selenium</b> package in Python instead of the <b>requests</b> package or some other tool. As I'll bring up later, this caused me to learn a few more advanced techniques with <b>selenium</b> than I knew at the start of the project, but I consider that a plus and not a minus.
 
 The initial setup was straightforward; I was able to find a consistent way to find all of the player's names and home-run totals on the page and loop through to collect the text data for each. But then I needed to find a place to collect more specific information about all of the same players and then combine it all into a nicely packaged dataset. Again, luckily for me, the Baseball Almanac made things relatively straightforward.
 
-# Solution and Problem 2
+### Solution and Problem 2
 
 Each player's name on the leaderboard was actually an internal link to a biography/stats page for that player. As I collected the name of each player, I could also collect the link attribute for that player. I've included some code below that was helpful. I knew how to grab the text from an element, but I wasn't sure how to grab an attribute of the element. It turned out to be pretty intuitive:
 
@@ -49,4 +49,61 @@ player_links.append(player.get_attribute("href"))
 
 Once all of these links had been collected, I was then able to start navigating to the different links and collecting more specific information about all of these home-run hitters. I, of course, could have simply called "get" method off of the webdriver that was initialized at the beginning of the script, navigating to each page in turn, but I wanted to keep the main leaderboard open in the first tab while opening and closing the other pages in new tabs.
 
-# Another Solution and Problem 3
+### Another Solution and Problem 3
+
+I learned how to open a new tab on the same webdriver and then how to close the new tab and return to the original tab. With very simple instructions, it would look something like this:
+
+```
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver.get("https://www.google.com")
+
+original_tab = driver.current_window_handle
+
+# Some action performed here
+
+driver.switch_to.new_window("tab")
+driver.get("https://www.wikipedia.org")
+
+# Some action performed here
+
+driver.close()
+driver.switch_to.window(original_tab)
+```
+
+The code included above will first initialize the driver, then open the first link. We make sure to store a reference to this tab so we can return back to it later. We can then switch to a new tab and open the second link. We then close the new tab and switch back to the original one.
+
+All in all, the code isn't very complicated but simply took some digging around in the <b>selenium</b> documentation to find some answers in how best to accomplish the task. So, now that I was able to open up the links to each player's profile and collect more data about them, I thought that the rest would be smooth sailing, but I ran into one final problem that I had to overcome: Loooooooooooooooooooooooooooooooooooooong load times.
+
+### Final Solution
+
+When I ran what I thought was going to be the final run of my Jupyter notebook, I got stuck on the third page in the list. (Picture included below to honor the great Babe Ruth.) The page kept spinning and spinning, just trying to get through loading everything on the page (probably the hundreds of ads on each page), and it just couldn't make it. After waiting about 10 minutes for it load, I decided to see if there was a way to stop loading the page after a certain amount of time.
+
+![Figure]({{site.url}}/{{site.baseurl}}/assets/images/babe-ruth.jpeg)
+
+Even better, I found that I could stop loading the page once a certain element had been loaded completely. This means that, once the information I needed had been loaded, I could just move on and collect it, no matter how long the rest of the page took to load. I had to import a few more methods and functions from the <b>selenium</b> package and set a few global variables, but then the web scraper ran so smoothly, it was like watching Trea Turner slide into home plate.
+
+![Figure]({{site.url}}/{{site.baseurl}}/assets/images/trea-turner-slide.gif)
+
+```
+# Additional packages
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+options = webdriver.ChromeOptions()
+options.page_load_strategy = "none"
+driver = webdriver.Chrome(options=options, service=ChromeService(ChromeDriverManager().install()))
+wait = WebDriverWait(driver, 20)
+
+wait.until(EC.presence_of_element_located((By.CLASS_NAME, 'boxed')))
+
+driver.execute_script("window.stop();")
+```
+
+In this case, the webdriver waited until the element with the class name of "boxed" was fully loaded and then stopped loading because we didn't care about anything in the HTML after this element. With this final piece of learning, the web scraper was complete. The dataset about the leading home-run hitters could be scraped, compiled, and saved. And so it was.
+
+## Conclusion
