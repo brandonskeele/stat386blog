@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Who is Brandon Keele?"
+title: About
 permalink: /about/
 ---
 
